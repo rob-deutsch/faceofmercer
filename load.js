@@ -14,13 +14,11 @@ function captureSlide(page, number) {
 		return mainCarousel.slideCount;
 	});
 	var offset = (number + 1) * -(sliderWidth / (sliderCount + 2));
-	console.log("offset: " + offset);
-	page.evaluate(function(number) {
+	page.evaluate(function(offset) {
 		$(".full-width-carousel .slider").slickSetOption("dots", false, true);
-		//$(".full-width-carousel .slider").slickPause();
-		$(".full-width-carousel .slider").slickGoTo(number, false);
-	}, number);
-	sleep(2000);
+		$(".full-width-carousel .slider").slickPause();
+		$(".full-width-carousel .slider .slick-track").css({"transform": "translate3d(" + offset + "px, 0px, 0px)"});
+	}, offset);
 	var clipRect = page.evaluate(function() {
 		return document.querySelector(".full-width-carousel .slider").getBoundingClientRect();
 	});
@@ -35,7 +33,7 @@ function captureSlide(page, number) {
 };
 
 var page = require('webpage').create();
-page.viewportSize = { width: 1280, height: 1024 };
+page.viewportSize = { width: 1024, height: 768 };
 page.open('http://www.mercer.com', function(status) {
 	console.log("Status: " + status);
 	if(status === "success") {

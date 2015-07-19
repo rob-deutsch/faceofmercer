@@ -6,6 +6,15 @@ function sleep(miliseconds) {
 };
 
 function captureSlide(page, number) {
+	var sliderWidth = page.evaluate(function() {
+		return $(".full-width-carousel .slider .slick-track").width();
+	});
+	var sliderCount = page.evaluate(function() {
+		var mainCarousel = $(".full-width-carousel .slider").getSlick();
+		return mainCarousel.slideCount;
+	});
+	var offset = (number + 1) * -(sliderWidth / (sliderCount + 2));
+	console.log("offset: " + offset);
 	page.evaluate(function(number) {
 		$(".full-width-carousel .slider").slickSetOption("dots", false, true);
 		//$(".full-width-carousel .slider").slickPause();

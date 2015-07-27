@@ -18,4 +18,7 @@ for png_file in png_files:
 	ids.append(id)
 	print "%s %s" % (png_file, id)
 
-client.create_album({ids:ids, title:"Title"})
+album = client.create_album({})
+client.album_add_images(album['deletehash'], ids)
+print "https://imgur.com/a/%s" % album["id"]
+

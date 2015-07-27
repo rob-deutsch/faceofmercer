@@ -28,9 +28,10 @@ function captureSlide(page, name, carouselSelector, number) {
 	}, offset, carouselSelector, trackSelector);
 	
 	// Get the exact location of the slide on the page
-	var clipRect = page.evaluate(function(carouselSelector) {
-		return document.querySelector(carouselSelector).getBoundingClientRect();
-	}, carouselSelector);
+	var clipRect = page.evaluate(function(trackSelector, i) {
+		slide = $(trackSelector + " .slick-slide").not(".slick-cloned")[i]
+		return slide.getBoundingClientRect();
+	}, trackSelector, number);
 	
 	// Set the clipping to only be equal to the slide
 	page.clipRect = {

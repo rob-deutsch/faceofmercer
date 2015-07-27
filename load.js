@@ -32,7 +32,7 @@ function captureSlides(page, name, carouselSelector) {
 			$(carouselSelector).slickPause();
 			$(trackSelector).css({"transform": "translate3d(" + offset + "px, 0px, 0px)"});
 	
-			slide = $(trackSelector + " .slick-slide").not(".slick-cloned")[i]
+			slide = $(trackSelector + " .slick-slide").not(".slick-cloned")[i];
 			return slide.getBoundingClientRect();
 		}, offset, carouselSelector, trackSelector);
 		

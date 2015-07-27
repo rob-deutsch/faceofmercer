@@ -27,14 +27,14 @@ function captureSlides(page, name, carouselSelector) {
 		
 		// Move the requested slide to be right in the middle
 		// And get the exact location of the slide on the page
-		var clipRect = page.evaluate(function(offset, carouselSelector, trackSelector) {
+		var clipRect = page.evaluate(function(i, offset, carouselSelector, trackSelector) {
 			$(carouselSelector).slickSetOption("dots", false, true);
 			$(carouselSelector).slickPause();
 			$(trackSelector).css({"transform": "translate3d(" + offset + "px, 0px, 0px)"});
 	
 			slide = $(trackSelector + " .slick-slide").not(".slick-cloned")[i];
 			return slide.getBoundingClientRect();
-		}, offset, carouselSelector, trackSelector);
+		}, number, offset, carouselSelector, trackSelector);
 		
 		// Set the clipping to only be equal to the slide
 		page.clipRect = {

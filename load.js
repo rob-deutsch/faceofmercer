@@ -13,6 +13,7 @@ function captureSlide(page, name, carouselSelector, number) {
 	}, carouselSelector);
 
 	// Calculate the per-slide pixel offset
+	// TODO: Get number of cloned
 	var offset = (number + 1) * -(sliderWidth / (sliderCount + 2));
 	
 	// Move the requested slide to be right in the middle

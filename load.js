@@ -12,9 +12,13 @@ function captureSlide(page, name, carouselSelector, number) {
 		return carousel.slideCount;
 	}, carouselSelector);
 
+	var clonedCount = page.evaluate(function(trackSelector) {
+		return $(trackSelector + " .slick-cloned").length;
+	}, trackSelector);
+
 	// Calculate the per-slide pixel offset
-	// TODO: Get number of cloned
-	var offset = (number + 1) * -(sliderWidth / (sliderCount + 2));
+	// Assumed that half of cloned are first, and half are last
+	var offset = (number + clonedCount / 2) * -(sliderWidth / (sliderCount + clonedCount));
 	
 	// Move the requested slide to be right in the middle
 	page.evaluate(function(offset, carouselSelector, trackSelector) {

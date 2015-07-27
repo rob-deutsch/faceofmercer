@@ -1,4 +1,4 @@
-function captureSlide(page, name, carouselSelector, number) {
+function captureSlides(page, name, carouselSelector) {
 	var trackSelector = carouselSelector + " .slick-track";
 
 	// Get the width of the track
@@ -16,6 +16,11 @@ function captureSlide(page, name, carouselSelector, number) {
 		return $(trackSelector + " .slick-cloned").length;
 	}, trackSelector);
 
+	console.log(name + " slide count: " + sliderCount);
+
+	var hashes = [];
+	
+	for (var number = 0; number < sliderCount; number++) {
 	// Calculate the per-slide pixel offset
 	// Assumed that half of cloned are first, and half are last
 	var offset = (number + clonedCount / 2) * -(sliderWidth / (sliderCount + clonedCount));
@@ -42,22 +47,10 @@ function captureSlide(page, name, carouselSelector, number) {
 	};
 	
 	// Save the image
-	var filename = name + number + ".png";
-	page.render(filename);
-	console.log("Saved image " + filename);
-};
-
-function captureSlides(page, name, carouselSelector) {
-	// Get the number of slides
-	var slideCount = page.evaluate(function(carouselSelector) {
-		var mainCarousel = $(carouselSelector).getSlick();
-		return mainCarousel.slideCount;
-	}, carouselSelector);
-	console.log(name + " slide count: " + slideCount);
-	// Iterate through each slide and take a screenshot
-	for(var i=0; i < slideCount; i++) {
-		captureSlide(page,name, carouselSelector,i);
-	};
+	//hashes.push(page.renderBase64('PNG'));
+	hashes.push("Base64 data"+number);
+	}
+	return(hashes);
 };
 
 var page = require('webpage').create();

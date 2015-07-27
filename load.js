@@ -47,8 +47,7 @@ function captureSlides(page, name, carouselSelector) {
 	};
 	
 	// Save the image
-	//hashes.push(page.renderBase64('PNG'));
-	hashes.push("Base64 data"+number);
+	hashes.push(page.renderBase64('PNG'));
 	}
 	return(hashes);
 };

@@ -63,10 +63,13 @@ page.viewportSize = { width: 1024, height: 768 };
 page.open('http://www.mercer.com', function(status) {
 	console.log("Status: " + status);
 	if(status === "success") {
-		page.render('homepage.png');
-		console.log("Saved homepage.png");
-		captureSlides(page, "main", ".full-width-carousel .slider");
-		captureSlides(page, "feature", ".feature-carousel .carousel-panel");
+		var info = {};
+		info["screenshot"] = page.renderBase64('PNG');
+		info["html"] = page.content;
+		console.log("Saved homepage");
+		info["slides_main"] = captureSlides(page, "main", ".full-width-carousel .slider");
+		info["slides_feature"] = captureSlides(page, "feature", ".feature-carousel .carousel-panel");
 	}
+	console.log(info["html"]);
 	phantom.exit();
 });

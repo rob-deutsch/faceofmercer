@@ -18,7 +18,7 @@ function captureSlides(page, name, carouselSelector) {
 
 	console.log(name + " slide count: " + sliderCount);
 
-	var hashes = [];
+	var slides = [];
 	
 	for (var number = 0; number < sliderCount; number++) {
 		// Calculate the per-slide pixel offset
@@ -27,27 +27,35 @@ function captureSlides(page, name, carouselSelector) {
 		
 		// Move the requested slide to be right in the middle
 		// And get the exact location of the slide on the page
-		var clipRect = page.evaluate(function(i, offset, carouselSelector, trackSelector) {
+		var s = page.evaluate(function(i, offset, carouselSelector, trackSelector) {
 			$(carouselSelector).slickSetOption("dots", false, true);
 			$(carouselSelector).slickPause();
 			$(trackSelector).css({"transform": "translate3d(" + offset + "px, 0px, 0px)"});
 	
-			slide = $(trackSelector + " .slick-slide").not(".slick-cloned")[i];
-			return slide.getBoundingClientRect();
+			var s = $(trackSelector + " .slick-slide").not(".slick-cloned")[i];
+			return {
+					clipRect: s.getBoundingClientRect(),
+					innerText: s.innerText,
+					innerHTML: s.innerHTML,
+				};
 		}, number, offset, carouselSelector, trackSelector);
 		
 		// Set the clipping to only be equal to the slide
 		page.clipRect = {
-			top: clipRect.top,
-			left: clipRect.left,
-			width: clipRect.width,
-			height: clipRect.height
+			top: s.clipRect.top,
+			left: s.clipRect.left,
+			width: s.clipRect.width,
+			height: s.clipRect.height
 		};
+
+		// Delete the bounding box info and add the image data
+		delete s["clipRect"];
+		s["screenshot"] = page.renderBase64('PNG');
 		
-		// Save the image
-		hashes.push(page.renderBase64('PNG'));
+		// Save theinfo
+		slides.push(s);
 	}
-	return(hashes);
+	return(slides);
 };
 
 var page = require('webpage').create();

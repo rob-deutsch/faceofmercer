@@ -70,7 +70,7 @@ function captureFeaturedArticles(page) {
 
 	var articles = [];
 	
-	for (var number = 0; number < sliderCount; number++) {
+	for (var number = 0; number < articleCount; number++) {
 		// Move the requested slide to be right in the middle
 		// And get the exact location of the slide on the page
 		var a = page.evaluate(function(i, divSelector) {

@@ -1,4 +1,4 @@
-function captureSlides(page, name, carouselSelector) {
+function captureSlides(page, carouselSelector) {
 	var trackSelector = carouselSelector + " .slick-track";
 
 	// Get the width of the track
@@ -16,7 +16,7 @@ function captureSlides(page, name, carouselSelector) {
 		return $(trackSelector + " .slick-cloned").length;
 	}, trackSelector);
 
-	console.log(name + " slide count: " + sliderCount);
+	console.log("Slide count: " + sliderCount);
 
 	var slides = [];
 	
@@ -68,8 +68,8 @@ page.open('http://www.mercer.com', function(status) {
 			screenshot: page.renderBase64('PNG'),
 			html: page.content,
 			slides: {
-				main: captureSlides(page, "main", ".full-width-carousel .slider"),
-				feature: captureSlides(page, "feature", ".feature-carousel .carousel-panel")
+				main: captureSlides(page, ".full-width-carousel .slider"),
+				feature: captureSlides(page, ".feature-carousel .carousel-panel")
 			}
 		};
 	};

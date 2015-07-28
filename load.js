@@ -29,6 +29,7 @@ function captureSlides(page, carouselSelector) {
 		// And get the exact location of the slide on the page
 		var s = page.evaluate(function(i, offset, carouselSelector, trackSelector) {
 			$(carouselSelector).slickSetOption("dots", false, true);
+			$(carouselSelector).slickSetOption("arrows", false, true);
 			$(carouselSelector).slickPause();
 			$(trackSelector).css({"transform": "translate3d(" + offset + "px, 0px, 0px)"});
 	

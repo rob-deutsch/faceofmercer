@@ -111,9 +111,9 @@ page.open('http://www.mercer.com', function(status) {
 			html: page.content,
 			slides: {
 				main: captureSlides(page, ".full-width-carousel .slider"),
-				feature: captureSlides(page, ".feature-carousel .carousel-panel")
-			},
-			articles: captureFeaturedArticles(page)
+				feature: captureSlides(page, ".feature-carousel .carousel-panel"),
+				articles: captureFeaturedArticles(page)
+			}
 		};
 	};
 	//console.log(info["html"]);

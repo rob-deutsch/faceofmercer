@@ -58,6 +58,48 @@ function captureSlides(page, carouselSelector) {
 	return(slides);
 };
 
+function captureFeaturedArticles(page) {
+	var divSelector = ".feat-articles";
+
+	// Get the number of featured articles
+	var articleCount = page.evaluate(function(divSelector) {
+		return $(divSelector + " .feat-article").length;
+	}, divSelector);
+
+	console.log("Article count: " + articleCount);
+
+	var articles = [];
+	
+	for (var number = 0; number < sliderCount; number++) {
+		// Move the requested slide to be right in the middle
+		// And get the exact location of the slide on the page
+		var a = page.evaluate(function(i, divSelector) {
+			var a = $(divSelector + " .feat-article")[i];
+			return {
+					clipRect: a.getBoundingClientRect(),
+					innerText: a.innerText,
+					innerHTML: a.innerHTML,
+				};
+		}, number, divSelector);
+		
+		// Set the clipping to only be equal to the slide
+		page.clipRect = {
+			top: a.clipRect.top,
+			left: a.clipRect.left,
+			width: a.clipRect.width,
+			height: a.clipRect.height
+		};
+
+		// Delete the bounding box info and add the image data
+		delete a["clipRect"];
+		a["screenshot"] = page.renderBase64('PNG');
+		
+		// Save theinfo
+		articles.push(a);
+	}
+	return(articles);
+};
+
 var page = require('webpage').create();
 page.viewportSize = { width: 1024, height: 768 };
 page.open('http://www.mercer.com', function(status) {
@@ -70,7 +112,8 @@ page.open('http://www.mercer.com', function(status) {
 			slides: {
 				main: captureSlides(page, ".full-width-carousel .slider"),
 				feature: captureSlides(page, ".feature-carousel .carousel-panel")
-			}
+			},
+			articles: captureFeaturedArticles(page)
 		};
 	};
 	//console.log(info["html"]);

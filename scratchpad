@@ -5,7 +5,7 @@ countries.each(function(index) {
   var langs = {};
   $(this).find("a").each(function(index) {
     var lang = $(this).text().trim();
-    var url = $(this).attr('href');
+    var url = $(this).get(0).href;
     langs[lang] = url;
   });
   sites[countryName] = langs;

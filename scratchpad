@@ -1,1 +1,7 @@
 $(".mrc-country").find("p").clone().children().remove().end().map(function(a) { return $(this).text().trim();})
+
+But only want to get without subchildren...
+var countries = $(".mrc-country").find("p");
+countries.each(function() {
+console.log($(this).clone().children().remove().end().text().trim());
+});

@@ -1,7 +1,13 @@
-$(".mrc-country").find("p").clone().children().remove().end().map(function(a) { return $(this).text().trim();})
-
-But only want to get without subchildren...
-var countries = $(".mrc-country").find("p");
-countries.each(function() {
-console.log($(this).clone().children().remove().end().text().trim());
+var countries = $(".mrc-country").find("p:has(a)");
+var sites = {};
+countries.each(function(index) {
+  countryName = $(this).clone().children().remove().end().text().trim();
+  var langs = {};
+  $(this).find("a").each(function(index) {
+    var lang = $(this).text().trim();
+    var url = $(this).attr('href');
+    langs[lang] = url;
+  });
+  sites[countryName] = langs;
 });
+console.log(sites);

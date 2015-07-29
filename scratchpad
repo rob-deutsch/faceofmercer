@@ -1,0 +1,1 @@
+$(".mrc-country").find("p").clone().children().remove().end().map(function(a) { return $(this).text().trim();})

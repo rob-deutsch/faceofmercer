@@ -138,7 +138,7 @@ page.open('http://www.mercer.com', function(status) {
 		});
 		return(sites);
 	});
-	console.log(sites);
+	console.log(JSON.stringify(sites));
 	phantom.exit();
 });
 

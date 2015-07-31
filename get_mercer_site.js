@@ -101,66 +101,30 @@ function captureFeaturedArticles(page) {
 	return(articles);
 };
 
-function getDataAsync(url, iterator) { 
-	console.log("Getting data for: " + url);
-	var page = require('webpage').create();
-	page.open(url, function(status) {
-		console.log(url + ": " + status);
-		if(status === "success") {
-			console.log("Saving home page");
-			var info = {
-				screenshot: page.renderBase64('PNG'),
-				html: page.content,
-				slides: {
-					main: captureSlides(page, ".full-width-carousel .slider"),
-					feature: captureSlides(page, ".feature-carousel .carousel-panel"),
-					articles: captureFeaturedArticles(page)
-				}
-			};
-			console.log(info);
-			iterator(null);
-		} else {
-			iterator(status);
-		}
-		//console.log(info["html"]);
-	});
+var system = require('system');
+if (system.args.length === 1) {
+	console.log('Need to pass URL as argument');
+	phantom.exit();
 };
-
+var url = system.args[1];
 var page = require('webpage').create();
-page.viewportSize = { width: 1024, height: 768 };
-page.open('http://www.mercer.com', function(status) {
-	var sites = page.evaluate(function () {
-		var countries = $(".mrc-country").find("p:has(a)");
-		var sites = {};
-		countries.each(function(index) {
-			countryName = $(this).clone().children().remove().end().text().trim();
-			var langs = {};
-			$(this).find("a").each(function(index) {
-				var lang = $(this).text().trim();
-				var url = $(this).get(0).href;
-				langs[lang] = url;
-			});
-			sites[countryName] = langs;
-		});
-		return(sites);
-	});
-	urls = [];
-	for (var country in sites) {
-		if (sites.hasOwnProperty(country)) {
-			for (var lang in sites[country]) {
-				if (sites[country].hasOwnProperty(lang)) {
-					urls.push(sites[country][lang]);
-				}
+console.log("Getting data for: " + url);
+page.open(url, function(status) {
+	console.log(url + ": " + status);
+	if(status === "success") {
+		console.log("Saving home page");
+		var info = {
+			screenshot: page.renderBase64('PNG'),
+			html: page.content,
+			slides: {
+				main: captureSlides(page, ".full-width-carousel .slider"),
+				feature: captureSlides(page, ".feature-carousel .carousel-panel"),
+				articles: captureFeaturedArticles(page)
 			}
-		}
+		};
+		console.log(JSON.stringify(info));
+	} else {
+		console.log(status);
 	}
-	console.log(urls);
-	async=require('async');
-	async.mapSeries(urls, getDataAsync, function(err, results) {
-		var webpages = results;
-		var fs = require('fs');
-		fs.write("big.html", JSON.stringify(webpages), 'w');
-		phantom.exit();
-	});
+	phantom.exit();
 });
-

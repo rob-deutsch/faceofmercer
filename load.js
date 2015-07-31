@@ -101,11 +101,11 @@ function captureFeaturedArticles(page) {
 	return(articles);
 };
 
-function get_data(url) { 
-	console.log("Running get_data: " + url);
+function getDataAsync(url, iterator) { 
+	console.log("Getting data for: " + url);
 	var page = require('webpage').create();
 	page.open(url, function(status) {
-		console.log("Status: " + status);
+		console.log(url + ": " + status);
 		if(status === "success") {
 			console.log("Saving home page");
 			var info = {
@@ -118,7 +118,10 @@ function get_data(url) {
 				}
 			};
 			console.log(info);
-		};
+			iterator(null);
+		} else {
+			iterator(status);
+		}
 		//console.log(info["html"]);
 	});
 };
@@ -141,18 +144,23 @@ page.open('http://www.mercer.com', function(status) {
 		});
 		return(sites);
 	});
-	//console.log(JSON.stringify(sites));
+	urls = [];
 	for (var country in sites) {
 		if (sites.hasOwnProperty(country)) {
-			//console.log(JSON.stringify(sites[country]));
 			for (var lang in sites[country]) {
 				if (sites[country].hasOwnProperty(lang)) {
-					console.log(country + " " + lang + " " + sites[country][lang]);
-					get_data(sites[country][lang]);
+					urls.push(sites[country][lang]);
 				}
 			}
 		}
 	}
-	//phantom.exit();
+	console.log(urls);
+	async=require('async');
+	async.mapSeries(urls, getDataAsync, function(err, results) {
+		var webpages = results;
+		var fs = require('fs');
+		fs.write("big.html", JSON.stringify(webpages), 'w');
+		phantom.exit();
+	});
 });
 

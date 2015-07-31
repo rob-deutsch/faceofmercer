@@ -101,6 +101,25 @@ function captureFeaturedArticles(page) {
 	return(articles);
 };
 
+function get_data(url) { 
+	page.open(url, function(status) {
+		console.log("Status: " + status);
+		if(status === "success") {
+			console.log("Saving home page");
+			var info = {
+				screenshot: page.renderBase64('PNG'),
+				html: page.content,
+				slides: {
+					main: captureSlides(page, ".full-width-carousel .slider"),
+					feature: captureSlides(page, ".feature-carousel .carousel-panel"),
+					articles: captureFeaturedArticles(page)
+				}
+			};
+		};
+		//console.log(info["html"]);
+	});
+};
+
 var page = require('webpage').create();
 page.viewportSize = { width: 1024, height: 768 };
 page.open('http://www.mercer.com', function(status) {
@@ -120,22 +139,6 @@ page.open('http://www.mercer.com', function(status) {
 		return(sites);
 	});
 	console.log(sites);
-});
-
-page.open('http://www.mercer.com', function(status) {
-	console.log("Status: " + status);
-	if(status === "success") {
-		console.log("Saving home page");
-		var info = {
-			screenshot: page.renderBase64('PNG'),
-			html: page.content,
-			slides: {
-				main: captureSlides(page, ".full-width-carousel .slider"),
-				feature: captureSlides(page, ".feature-carousel .carousel-panel"),
-				articles: captureFeaturedArticles(page)
-			}
-		};
-	};
-	//console.log(info["html"]);
 	phantom.exit();
 });
+

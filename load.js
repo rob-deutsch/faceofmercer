@@ -138,7 +138,16 @@ page.open('http://www.mercer.com', function(status) {
 		});
 		return(sites);
 	});
-	console.log(JSON.stringify(sites));
+	//console.log(JSON.stringify(sites));
+	for (var country in sites) {
+		if (sites.hasOwnProperty(country)) {
+			for (var lang in country) {
+				if (country.hasOwnProperty(lang)) {
+					console.log(country + " " + lang + " " + sites[country][lang]);
+				}
+			}
+		}
+	}
 	phantom.exit();
 });
 

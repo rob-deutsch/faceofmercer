@@ -102,6 +102,8 @@ function captureFeaturedArticles(page) {
 };
 
 function get_data(url) { 
+	console.log("Running get_data: " + url);
+	var page = require('webpage').create();
 	page.open(url, function(status) {
 		console.log("Status: " + status);
 		if(status === "success") {
@@ -115,6 +117,7 @@ function get_data(url) {
 					articles: captureFeaturedArticles(page)
 				}
 			};
+			console.log(info);
 		};
 		//console.log(info["html"]);
 	});
@@ -141,13 +144,15 @@ page.open('http://www.mercer.com', function(status) {
 	//console.log(JSON.stringify(sites));
 	for (var country in sites) {
 		if (sites.hasOwnProperty(country)) {
-			for (var lang in country) {
-				if (country.hasOwnProperty(lang)) {
+			//console.log(JSON.stringify(sites[country]));
+			for (var lang in sites[country]) {
+				if (sites[country].hasOwnProperty(lang)) {
 					console.log(country + " " + lang + " " + sites[country][lang]);
+					get_data(sites[country][lang]);
 				}
 			}
 		}
 	}
-	phantom.exit();
+	//phantom.exit();
 });
 

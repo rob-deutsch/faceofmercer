@@ -101,13 +101,18 @@ function captureFeaturedArticles(page) {
 	return(articles);
 };
 
+// Read arguments to determine which URL to get
 var system = require('system');
 if (system.args.length === 1) {
 	console.log('Need to pass URL as argument');
 	phantom.exit();
 };
 var url = system.args[1];
+
+// Set up page
 var page = require('webpage').create();
+
+// Get the data
 console.log("Getting data for: " + url);
 page.open(url, function(status) {
 	console.log(url + ": " + status);

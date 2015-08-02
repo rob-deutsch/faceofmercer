@@ -127,7 +127,12 @@ page.open(url, function(status) {
 				articles: captureFeaturedArticles(page)
 			}
 		};
-		console.log(JSON.stringify(info));
+		fs = require('fs');
+		if (system.args.length >= 3) {
+			fs.write(system.args[2], JSON.stringify(info), 'w');
+		} else {
+			console.log(JSON.stringify(info));
+		};
 	} else {
 		console.log(status);
 	}

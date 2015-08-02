@@ -1,17 +1,13 @@
-var mysql      = require('mysql');
-var credentials     = require('./credentials');
-var connection = mysql.createConnection({
-  host     : credentials.host,
-  user     : credentials.user,
-  password : credentials.password,
-  database : credentials.database,
-});
+var exec = require('child_process').exec,
+    temp = require('temp'),
+    fs   = require('fs');
 
-connection.connect(function(err) {
-	if (err) {
-		console.log(err.stack);
-		return;
-	}
-	console.log("connected as id " + connection.threadId);
-	process.exit();
+var list_sites = "sites.json";
+var list_sites_cmd = "./phantomjs list_mercer_sites.js " + list_sites;
+
+exec(list_sites_cmd, function(err, stdout, stderr) {
+	console.log('stdout: ' + stdout);
+	console.log('stderr: ' + stderr);
+	var sites = JSON.parse(fs.readFileSync(list_sites));	
+	console.log(JSON.stringify(sites));
 });

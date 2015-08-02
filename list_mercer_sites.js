@@ -25,7 +25,13 @@ page.open('http://www.mercer.com', function(status) {
 		});
 		return(sites);
 	});
-	console.log(JSON.stringify(sites));
+	system = require('system');
+	fs = require('fs');
+	if (system.args.length === 1) {
+		console.log(JSON.stringify(sites));
+	} else {
+		fs.write(system.args[1], JSON.stringify(sites), 'w');
+	}
 	phantom.exit();
 });
 

@@ -9,5 +9,13 @@ exec(list_sites_cmd, function(err, stdout, stderr) {
 	console.log('stdout: ' + stdout);
 	console.log('stderr: ' + stderr);
 	var sites = JSON.parse(fs.readFileSync(list_sites));	
-	console.log(JSON.stringify(sites));
+	for (var country in sites) {
+		if (sites.hasOwnProperty(country)) {
+			for (var lang in sites[country]) {
+				if (sites[country].hasOwnProperty(lang)) {
+					console.log(country + " " + lang + " " + sites[country][lang]);
+				}
+			}
+		}
+	}
 });

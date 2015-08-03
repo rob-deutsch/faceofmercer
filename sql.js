@@ -20,5 +20,12 @@ connection.connect(function(err) {
 		return;
 	}
 	console.log("connected as id " + connection.threadId);
-	process.exit();
+	connection.query('CREATE TABLE blah (Test int)');
+	connection.query('SHOW TABLES', function(err, rows) {
+		console.log(rows);
+	});
+	connection.query('DROP TABLE blah');
+        connection.query('SHOW TABLES', function(err, rows) {
+                console.log(rows);
+        });
 });

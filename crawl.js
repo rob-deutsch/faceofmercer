@@ -12,4 +12,13 @@ exec(get_site_cmd, function(err, stdout, stderr) {
 	console.log('stdout: ' + stdout);
 	console.log('stderr: ' + stderr);
 	var site = JSON.parse(fs.readFileSync(get_site));
+	for (var section in site.slides) {
+		if (site.slides.hasOwnProperty(section)) {
+			for (var slide in sites.slide[section]) {
+				if (sites.slide[section].hasOwnProperty(slide)) {
+					console.log(sites.slide[section][slide].innerText);
+				}
+			}
+		}
+	};
 });

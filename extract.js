@@ -21,14 +21,17 @@ exec(get_site_cmd, function(err, stdout, stderr) {
 		if (site.slides.hasOwnProperty(section)) {
 			for (var slide in site.slides[section]) {
 				if (site.slides[section].hasOwnProperty(slide)) {
-					uploadSlideToS3(site.slides, section, slide);
+					var filename = uploadSlideToS3(site.slides, section, slide);
+					site.slides[section][slide].screenshot = filename;
 				}
 			}
 		}
 	};
-	uploadToS3(timestamp + 
-	           '/' + country + '-' + lang + 
-                   '/homepage.png', site.screenshot);
+	var filename = timestamp + 
+	               '/' + country + '-' + lang + 
+                       '/homepage.png';
+	uploadToS3(filename, site.screenshot);
+	site.screenshot = filename
 });
 
 function uploadSlideToS3(slides, section, slide) {
@@ -39,6 +42,7 @@ function uploadSlideToS3(slides, section, slide) {
 	               '/' + slide + '.png';
 	var data = slides[section][slide].screenshot;
 	uploadToS3(filename, data);
+	return(filename);
 };
 
 function uploadToS3(filename, data) {

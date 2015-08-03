@@ -1,4 +1,4 @@
-credentials.*
+credentials*
 *.png
 node_modules
 phantomjs

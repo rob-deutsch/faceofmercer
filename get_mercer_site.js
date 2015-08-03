@@ -111,6 +111,7 @@ var url = system.args[1];
 
 // Set up page
 var page = require('webpage').create();
+page.viewportSize = { width: 1024, height: 768 };
 
 // Get the data
 console.log("Getting data for: " + url);
